@@ -9,7 +9,7 @@ import com.greenflag.utils.http.WebClientRequest.RequestTypes;
 
 import android.os.AsyncTask;
 
-public class DownloadStringTask extends AsyncTask<URL, Void, String>{
+public class DownloadStringTask extends AsyncTask<URL, Boolean, String>{
 
 	@Override
 	protected String doInBackground(URL... params) {
