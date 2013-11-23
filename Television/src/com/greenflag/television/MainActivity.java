@@ -43,6 +43,7 @@ public class MainActivity extends Activity {
 			try {
 				String response = task.get();
 				List<Channel> channelList = DomainHelper.getChannelsFromJsonResponse(response);
+				
 				Channel[] channelsArray = channelList.toArray(new Channel[channelList.size()]);
 				ChannelListAdapter adapter = new ChannelListAdapter(this,R.layout.channel_listview,channelList);
 				ListView listView = (ListView) findViewById(R.id.channelListView);

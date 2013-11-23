@@ -1,9 +1,11 @@
 package com.greenflag.utils.http;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Vector;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -32,5 +34,22 @@ public class WebClient  {
 		return result;
 	}
 
-
+public byte[] downloadBytes(WebClientRequest request) throws ClientProtocolException, IOException{
+	
+	byte[] result = null;
+	  DefaultHttpClient httpClient = new DefaultHttpClient();
+      HttpGet httpGet = new HttpGet(request.getRequestUrl().toString());
+      HttpResponse httpResponse = httpClient.execute(httpGet);
+      HttpEntity httpEntity = httpResponse.getEntity();
+      InputStream is = httpEntity.getContent();       
+      ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+      int nRead;
+      byte[] data = new byte[16384];
+      while ((nRead = is.read(data, 0, data.length)) != -1) {
+    	  buffer.write(data, 0, nRead);
+    	}
+      buffer.flush();
+      result = buffer.toByteArray();
+      return result;
+	}
 }

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.greenflag.television.R;
@@ -30,6 +31,7 @@ public class ChannelListAdapter extends ArrayAdapter<Channel> {
 		this.context =context;
 		this.resource=resource;
 		this.channels = objects;
+		
 	}
 	
 	@Override
@@ -38,7 +40,10 @@ public class ChannelListAdapter extends ArrayAdapter<Channel> {
 		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View result = inflater.inflate(R.layout.channel_listview, parent, false);
 		TextView nameText= (TextView) result.findViewById(R.id.channelName);
+		ImageView channelImage = (ImageView)result.findViewById(R.id.channelImage);
+		
 		Channel c = channels.get(position);
+		channelImage.setImageBitmap(c.getBitmap());
 		nameText.setText(c.getName());
 		return result;
 	}
