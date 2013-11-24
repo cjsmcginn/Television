@@ -29,4 +29,6 @@ public class DomainHelperTests extends TestCase {
 		List<Channel> actual = DomainHelper.getChannelsFromJsonResponse(response);
 		Assert.assertTrue(actual.size()>0);
 	}
+	
+	
 }

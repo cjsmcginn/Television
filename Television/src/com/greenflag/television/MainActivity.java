@@ -8,9 +8,14 @@ import java.util.concurrent.ExecutionException;
 import org.json.JSONException;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.greenflag.television.domain.Channel;
@@ -19,7 +24,7 @@ import com.greenflag.television.ui.ChannelListAdapter;
 import com.greenflag.utils.http.DownloadStringTask;
 
 public class MainActivity extends Activity {
-
+private Channel selectedChannel;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,7 +39,7 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	protected void populateChannelList(){
-		//TODO Refactor into better helper
+		
 		DownloadStringTask t = new DownloadStringTask();
 		try {
 			URL route = new URL(DomainHelper.CHANNELS_ROUTE);
@@ -48,6 +53,18 @@ public class MainActivity extends Activity {
 				ChannelListAdapter adapter = new ChannelListAdapter(this,R.layout.channel_listview,channelList);
 				ListView listView = (ListView) findViewById(R.id.channelListView);
 				listView.setAdapter(adapter);
+				listView.setOnItemClickListener(new OnItemClickListener() {
+					  @Override
+					  public void onItemClick(AdapterView<?> parent, View view,
+					    int position, long id) {
+						 ChannelListAdapter a = (ChannelListAdapter)parent.getAdapter();
+						 Channel selected = a.getItem(position);
+						 //Intent intent = new Intent(this, DetailActivity.class);
+						  Log.i("Television",selected.getImageUrl());
+						  setSelectedChannel(selected);
+						  openDetailView();
+					  }
+					}); 
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -62,5 +79,18 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	};
+	}
+	public void openDetailView(){
+		Intent intent = new Intent(this, DetailActivity.class);
+		intent.putExtra("VideoUrl", getSelectedChannel().getImageUrl());
+		startActivity(intent);
+	}
+
+	public Channel getSelectedChannel() {
+		return selectedChannel;
+	}
+
+	protected void setSelectedChannel(Channel selectedChannel) {
+		this.selectedChannel = selectedChannel;
+	}
 }
